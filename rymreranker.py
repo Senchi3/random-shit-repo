@@ -19,8 +19,12 @@ with open("data/rym.txt", 'r', encoding="utf-8") as infile, \
             if filter in line:
                 break
             else:
-                newlines.append(line)
-                break
+                count =+ 1
+                if count <= len(filters):
+                    newlines.append(line)
+                    break
+
+
 
     print("HERE ARE THE NEWLINES")
     print(newlines)
@@ -41,6 +45,9 @@ with open("data/rym.txt", 'r', encoding="utf-8") as infile, \
     
     n = len(data)
 
+
+    # NOTE: FROM HERE ON OUT BASICALLY EVERYTHING IS BROKEN
+
     # Traverse through all array elements
     for i in range(n-1):
     # range(n) also work but outer loop will repeat one time more than needed.
@@ -56,3 +63,8 @@ with open("data/rym.txt", 'r', encoding="utf-8") as infile, \
             secondoption = data[(j + 2)]
             print(firstoption)
             print(secondoption)
+            opinion = int(input("Which one of these is better: (1) {} or (2) {}?".format(firstoption[0], secondoption[0])))
+            if opinion == 1:
+                data[j][1] = opinion
+            elif opinion == 2:
+                data[j + 1][1] = opinion
