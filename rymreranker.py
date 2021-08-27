@@ -1,11 +1,6 @@
 # Only albums with this RYM score and higher get selected
 min_score = 10
 
-
-import itertools
-import random
-
-
 with open("data/rym.txt", 'r', encoding="utf-8") as infile, \
      open("data/output.txt", 'w', encoding="utf-8") as outfile, \
      open("data/filter.txt", 'r', encoding="utf-8") as filterfile:
@@ -39,30 +34,24 @@ with open("data/rym.txt", 'r', encoding="utf-8") as infile, \
                                                          line_elements[4],
                                                          line_elements[5],
                                                          line_elements[6])
-        albums.append({
-            'title': formatted_line,
-            'score': 0
-        })
+        albums.append(formatted_line)
 
-    # gathers all unique album-album combos. Amount of combinations grows extremely quickly
-    # but there's no better way to find, say, the top 10 albums.
-    combinations = list(itertools.combinations(albums, 2))
-    print('There are', len(combinations), 'combinations.')
-    random.shuffle(combinations)
+    # bubble sort algorithm
+    # couldnt figure out how to reverse it so it just reverses the list after sorting
+    for i in range(len(albums)):
+        swapped = False
+        for j in range(len(albums)-i-1):
+            print('\nA:', albums[j])
+            print('B:', albums[j+1])
+            answer = input("Which album is better? (A/B) ")
 
-    for combination in combinations:
-        print('')
-        print('1. ', combination[0]['title'])
-        print('2. ', combination[1]['title'])
-        answer = input('Which album do you prefer? ')
-        if answer == '1':
-            albums[albums.index(combination[0])].update({'score': combination[0]['score'] + 1})
-        elif answer == '2':
-            albums[albums.index(combination[1])].update({'score': combination[1]['score'] + 1})
-        else:
-            print('Skipping...')
+            if answer.lower().rstrip() == 'a':
+                albums[j], albums[j+1] = albums[j+1], albums[j]
+                swapped = True
+        if swapped == False:
+            break
+    albums.reverse()
 
     print('')
-    sorted_albums = sorted(albums, key = lambda i: i['score'], reverse = True)
     for i in range(5):
-        print('{}. {}   ({}p)'.format(i+1, sorted_albums[i]['title'], sorted_albums[i]['score']))
+        print('{}. {}   ({}p)'.format(i+1, albums[i], albums[i]))
