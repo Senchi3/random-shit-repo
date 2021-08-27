@@ -1,3 +1,7 @@
+# Only albums with this RYM score and higher get selected
+min_score = 10
+
+
 import itertools
 import random
 
@@ -23,6 +27,11 @@ with open("data/rym.txt", 'r', encoding="utf-8") as infile, \
 
     for line in new_lines:
         line_elements = line.replace('"', '').split(',')
+
+        rym_score = 0 if line_elements[7] == '' else int(line_elements[7])
+        if rym_score < min_score:
+            continue
+
         formatted_line = "{} {} {} {}  - {} ({})".format(line_elements[1],
                                                          line_elements[2],
                                                          line_elements[3],
@@ -37,11 +46,10 @@ with open("data/rym.txt", 'r', encoding="utf-8") as infile, \
     # gathers all unique album-album combos. Amount of combinations grows extremely quickly
     # but there's no better way to find, say, the top 10 albums.
     combinations = list(itertools.combinations(albums, 2))
+    print('There are', len(combinations), 'combinations.')
     random.shuffle(combinations)
 
     for combination in combinations:
-        if combination[0]['title'] == combination[1]['title']:
-            continue
         print('')
         print('1. ', combination[0]['title'])
         print('2. ', combination[1]['title'])
@@ -53,5 +61,7 @@ with open("data/rym.txt", 'r', encoding="utf-8") as infile, \
         else:
             print('Skipping...')
 
+    print('')
     sorted_albums = sorted(albums, key = lambda i: i['score'], reverse = True)
-    print(sorted_albums)
+    for i in range(5):
+        print(str(i+1) + '. ' + sorted_albums[i]['title'] + ' (' + str(sorted_albums[i]['score']) + 'p)')
