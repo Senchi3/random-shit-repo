@@ -28,11 +28,12 @@ with open("data/rym.txt", 'r', encoding="utf-8") as infile, \
     for line in new_lines:
         line_elements = line.replace('"', '').split(',')
 
+        # filter out albums with bad scores
         rym_score = 0 if line_elements[7] == '' else int(line_elements[7])
         if rym_score < min_score:
             continue
 
-        formatted_line = "{} {} {} {}  - {} ({})".format(line_elements[1],
+        formatted_line = "{} {} {} {} - {} ({})".format(line_elements[1],
                                                          line_elements[2],
                                                          line_elements[3],
                                                          line_elements[4],
@@ -64,4 +65,4 @@ with open("data/rym.txt", 'r', encoding="utf-8") as infile, \
     print('')
     sorted_albums = sorted(albums, key = lambda i: i['score'], reverse = True)
     for i in range(5):
-        print(str(i+1) + '. ' + sorted_albums[i]['title'] + ' (' + str(sorted_albums[i]['score']) + 'p)')
+        print('{}. {}   ({}p)'.format(i+1, sorted_albums[i]['title'], sorted_albums[i]['score']))
