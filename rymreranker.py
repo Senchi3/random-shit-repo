@@ -1,7 +1,7 @@
 # Only albums with this RYM score and higher get selected
 min_score = 10
 
-with open("data/rym.txt", 'r', encoding="utf-8") as infile, \
+with open("data/input.txt", 'r', encoding="utf-8") as infile, \
      open("data/output.txt", 'w', encoding="utf-8") as outfile, \
      open("data/filter.txt", 'r', encoding="utf-8") as filterfile:
 
